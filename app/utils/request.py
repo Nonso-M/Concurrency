@@ -3,13 +3,11 @@ import asyncio
 import os
 import datetime
 from dotenv import load_dotenv
+# from app.utils import request
 
 load_dotenv()
 
-
-# account_id = 'ehealth4everyone667749809'
-# api_key = '1bn8ip05ghk76prqdq97guu35e'
-
+# Instantiate the MongoDB class to use in the function
 account_id = os.environ.get('ACCOUNT_ID')
 api_key= os.environ.get('API_KEY')
 
@@ -69,6 +67,7 @@ async def parse_data1()->dict:
         return {"Error": "The is is a network cnnection issue"}
 
 
+
 async def convert_currency( to_currency:str, from_currency:str, amount:float)->dict:
     """This function converts from one currency to another when given their names and amount
 
@@ -81,10 +80,12 @@ async def convert_currency( to_currency:str, from_currency:str, amount:float)->d
         dict: a dictionary that contains several keys and values about
                 details of the conversion
     """   
+    # Concatenating the string representation to make a request to the xe.com api
     base_url = 'https://xecdapi.xe.com/v1/convert_from/' 
     query_string = f'?to={to_currency}&from={from_currency}&amount={amount}'
     full_url = base_url + query_string
     print(full_url)
+
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(full_url, auth=aiohttp.BasicAuth(account_id, api_key)) as response:
