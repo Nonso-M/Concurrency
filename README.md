@@ -24,10 +24,9 @@ pip install -r  requirements.txt
 ```
 
 ###Running the program/Usage
-to run the program, open your command line and run the command below.
+to run the program, open your command line and run the command below from theroot directory.
 ```bash
-## main can be subtituted with the relative path to the main file 
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 The login details for thhe application is
