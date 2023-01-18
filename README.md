@@ -36,7 +36,7 @@ The login details for thhe application is
 The different routes are
 - `/convert` - You provide query in the form of 
 `/?from_currency=<currency iso>&to_currency<contry iso>&amount<enter integer> 
-- `/currency`  
+- `/currencies`  
 - `/history`
 
 
