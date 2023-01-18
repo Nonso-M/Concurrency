@@ -1,9 +1,9 @@
-from app.utils import request
+from utils import request
 from fastapi import FastAPI, Depends
-from app.cache import mongodb
-from app.models.models import Convert, History, Error
+from cache import mongodb
+from models.models import Convert, History, Error
 from typing import Union
-from app.security.authentication import get_current_username
+from security.authentication import get_current_username
 
 
 
