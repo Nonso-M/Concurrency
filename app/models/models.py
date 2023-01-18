@@ -2,11 +2,9 @@ from pydantic import BaseModel
 
 
 
-class ConversionData(BaseModel):
-    from_currency: str
-    to_currency: str
-    original_amount: float
-    converted_amount: float
+class Currency(BaseModel):
+    currency_dict: dict[str,str]
+
 
 
 
@@ -23,3 +21,14 @@ class Convert(BaseModel):
             "metadata":{"time_of_conversion":"2023-01-17T00:00:00Z",
                         "from_currency":"USD","to_currency":"GBP"}}
             } 
+
+
+
+class History(BaseModel):
+    history: list
+
+
+
+class Error(BaseModel):
+    Status: str 
+    Error: str

@@ -1,8 +1,9 @@
-from utils import request
-from fastapi import FastAPI
-from cache import mongodb
-from models import models
-
+from app.utils import request
+from fastapi import FastAPI, Depends
+from app.cache import mongodb
+from app.models.models import Convert, History, Error
+from typing import Union
+from app.security.authentication import get_current_username
 
 
 
@@ -35,54 +36,44 @@ app = FastAPI(
 
 @app.on_event("startup")
 async def startup_event():
-    """Code to run during startup"""
+    """Code to run during startup (Initialize connection to the mongodb server)"""
     # Start pool of connections to the Redis cache
     await mongodb.mongodb.start()
 
 
 
 @app.get("/")
-async def root():
-    return {"message": "Hello World"}
+async def root(username: str = Depends(get_current_username)):
+    return {"message": "Welcome to my Currency Converter!"}
 
 
-@app.get("/currencies/")
-async def get_currencies():
-    data = await request.parse_data1()
+
+@app.get("/currencies/", tags = ["currency"])
+async def get_currencies(username: str = Depends(get_current_username)):    
+    data = await request.parse_currency_data()
     return data
-    
 
-@app.get("/convert" )
-async def converter(from_currency: str, to_currency: str, amount: float):
+
+
+@app.get("/convert", response_model= Union[Convert, Error], tags = ["Convert"])
+async def converter(from_currency: str, to_currency: str, amount: float,
+                        username: str = Depends(get_current_username)):
     data = await request.convert_currency(from_currency, to_currency, amount)
-    mongodb.mongodb.update_db(dict(data))
+    if 'rate' in data.keys():
+      mongodb.mongodb.update_db(dict(data))
     return data
 
-@app.get("/history" )
-async def converter(limit:str):
+
+
+@app.get("/history", response_model= History, tags= ["history"] )
+async def converter(username: str = Depends(get_current_username)):
     data= mongodb.mongodb.retrieve_db()
     return data
 
-    
+
 
 @app.on_event("shutdown")
 async def shutdown_event():
     """Code to run during shutdown"""
     await mongodb.mongodb.close()
 
-
-# load_dotenv()
-# URL = os.environ.get('URL') 
-# client = pymongo.MongoClient(URL)
-
-
-# post = {"author": "Mike",
-#         "text": "My first blog post!",
-#         "tags": ["mongodb", "python", "pymongo"],
-#   }
-# db = client['test-database']
-
-# post_id = db.insert(post)
-
-# print(URL)
-# # client = pymongo.MongoClient(<Atlas connection string>)

@@ -7,20 +7,6 @@ load_dotenv()
 
 URL = os.environ.get('URL') 
 
-client = MongoClient(URL)
-
-
-# post = {"author": "Mike",
-#         "text": "My first blog post!",
-#         "tags": ["mongodb", "python", "pymongo"],
-#   }
-# db = client['test-database']
-
-# post_id = db.insert(post)
-
-# print(URL)
-# # client = pymongo.MongoClient(<Atlas connection string>)
-
 
 
 
@@ -33,11 +19,13 @@ class MongoDb:
 
     connect: Optional[MongoClient] = MongoClient(URL)
 
+
     async def start(self):
         """
         Connects to the MongoDB server
         """
         self.connect = MongoClient(URL)
+
 
 
     def get_collection(self):
@@ -51,6 +39,7 @@ class MongoDb:
         collection = db['history']
 
         return collection
+
 
 
     def update_db(self, currency_info) -> None:
@@ -68,31 +57,35 @@ class MongoDb:
 
     def retrieve_db(self) -> dict:
         """
-        Gets the value for a key.
-        Args:
-            key (str): key
+        Gets all history data from the mongo db database.
+
         Returns:
-            str: value. Defaults to None if the key does not exist.
+            dict: Returns a dictionary of all history searches.
         """
         collection = self.get_collection()
         data = collection.find({})
         currencies = [x for x in data]
         for currency in currencies:
             del currency['_id']
-        return currencies
+        return {'history':currencies}
 
 
     async def close(self) -> None:
         """Closes pool of connections"""
         await self.connect.close()
 
+
+
+#Instantiating it to curb import errors
 mongodb = MongoDb()
 
 
 
+#Testing Purposes
 if __name__== "__main__":
     mongodb.start()
     data = mongodb.retrieve_db()
-    # print([x for x in data])
+    
     print(data)
+    print(type(data))
     

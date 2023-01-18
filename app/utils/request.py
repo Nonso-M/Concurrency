@@ -22,8 +22,8 @@ def parse_data(dictionary:dict)->dict:
     check = dictionary.get('to', 0)
     if check== 0:
         return { "code": "Failure",
-                "message": "Invalid conversion strings"
-                                                             }
+                "message": "Invalid conversion strings Please confirm or check the docs"
+                                                                            }
 
     else:
         rate = round(dictionary['to'][0]['mid'] / dictionary['amount'], 2)
@@ -44,7 +44,7 @@ def parse_data(dictionary:dict)->dict:
 
 
 
-async def parse_data1()->dict:
+async def parse_currency_data()->dict:
     """ Take in a dictionary and parses it as specified in the pydantic model
     Args:
         dictionary (dict): Dictionary to be passed
@@ -64,7 +64,7 @@ async def parse_data1()->dict:
 
     except Exception as e:
         print(e)
-        return {"Error": "The is is a network cnnection issue"}
+        return {"Error": "Please crosscheck your query string and try again"}
 
 
 
@@ -97,7 +97,7 @@ async def convert_currency( to_currency:str, from_currency:str, amount:float)->d
 
     except Exception as e:
         print(e)
-        return {"Error": "The is is a network cnnection issue"}
+        return {"Error": "Please crosscheck your query parameters and try again."}
 
 
 

@@ -27,7 +27,30 @@ dictionary = [{'iso': 'GBP', 'currency_name': 'British Pound', 'is_obsolete': Fa
   {'iso': 'KES', 'currency_name': 'Kenyan Shilling', 'is_obsolete': False}]
 
 
+dict1 = {'terms': 'http://www.xe.com/legal/dfs.php',
+        'privacy': 'http://www.xe.com/privacy.php',
+        'from': 'GBP',
+        'amount': 100.0,
+        'timestamp': '2023-01-16T00:00:00Z',
+        'to': [{'quotecurrency': 'USD', 'mid': 122.248317431}]}
+
+dict2= {'code': 7,
+          'message': 'No USD29 found on 2023-01-17T19:00:48Z',
+          'documentation_url': 'https://xecdapi.xe.com/docs/v1/'}
+
+
 @pytest.fixture
 def make_dict():
 
     return dictionary
+
+
+@pytest.fixture
+def make_dict2():
+
+    return dict1
+
+@pytest.fixture
+def make_dict3():
+
+    return dict2
