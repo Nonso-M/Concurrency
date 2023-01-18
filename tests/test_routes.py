@@ -36,7 +36,7 @@ def test_history_route():
 
 
 def test_convert_route_with_correct_input():
-    """Testing the history endpoint and affirming the output
+    """Testing the convert route when a right query is made
     """
     dict_keys = ['converted_amount', 'rate', 'metadata']    
     response = client.get("/convert?from_currency=gbp&to_currency=usd&amount=100", auth=(username, password))
@@ -47,7 +47,7 @@ def test_convert_route_with_correct_input():
 
 
 def test_convert_route_with_wrong_input():
-    """Testing the history endpoint and affirming the output
+    """Testing the convert route when a bad request is made
     """
     dict_keys = ['code', 'failure']  
     response = client.get("/convert?from_currency=gbp&to_currency=usd&amount=100")
